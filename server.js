@@ -8,8 +8,9 @@ var express		= require('express'); 		// call express
 var app			= express(); 				// define our app using express
 var bodyParser	= require('body-parser');
 var Sequelize	= require("sequelize");
+var credentials = require("./credentials");
 
-var sequelize = new Sequelize('expenses', 'expenses', 'expenses');
+var sequelize = new Sequelize(credentials.database, credentials.username, credentials.password);
 var Expense = sequelize.import('./models/expense');
 
 // configure app to use bodyParser()
@@ -69,4 +70,4 @@ app.use('/api', router);
 // START THE SERVER
 // =============================================================================
 app.listen(port);
-console.log('Magic happens on port ' + port);
+console.log('Server on port ' + port);
