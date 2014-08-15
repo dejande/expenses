@@ -1,0 +1,63 @@
+    <nav class="navbar navbar-default navbar-static-top" role="navigation">
+	  <div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      <a class="navbar-brand" href="#">
+	      	<span ng-if="name">Hi, {{name}}!</span>
+	      	<span ng-if="!name">Expenses</span>
+	      </a>
+	    </div>
+	  </div><!-- /.container-fluid -->
+	</nav>
+	{{str}}
+
+	<div class="container-fluid">
+		<form role="form" ng-submit="save()">
+		  <div class="form-group">
+		    <label for="expenseInput">Expense</label>
+		    <input ng-model="expense.price" required="required" autofocus="true" type="number" step="0.01" class="form-control" id="expenseInput" placeholder="Enter expense with a . and not ,">
+		  </div>
+		  <div class="form-group">
+		    <label>Date</label>
+		    <div class="row form-inline">
+		    	<div class="col-xs-4 form-group">
+			    	<select class="form-control" ng-model="expense.day" ng-options="n for n in [] | range:1:31"></select>
+				</div>
+		    	<div class="col-xs-4 form-group">
+			    	<select class="form-control" ng-model="expense.month" ng-options="n for n in [] | range:1:12"></select>
+				</div>
+		    	<div class="col-xs-4 form-group">
+			    	<select class="form-control" ng-model="expense.year" ng-options="n for n in [] | range:2013:2015"></select>
+				</div>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="expenseTypeInput">Expense type</label>
+		    <select name="type" required="required" ng-model="expense.type" type="text" class="form-control" id="expenseTypeInput">
+		    	<option value="">Please select</option>
+		    	<option value="Avto">Avto</option>
+		    	<option value="Hrana">Hrana</option>
+		    	<option value="Stanovanje">Stanovanje</option>
+		    	<option value="Poroka">Poroka</option>
+		    	<option value="Ostalo">Ostalo</option>
+		    </select>
+		  </div>
+		  <div ng-if="!name" class="form-group">
+		    <label for="expenseNameInput">Who paid for it</label>
+		    <select name="type" required="required" ng-model="expense.name" type="text" class="form-control" id="expenseNameInput">
+		    	<option value="">Please select</option>
+		    	<option value="Dejan">Dejan</option>
+		    	<option value="Katarina">Katarina</option>
+		    </select>
+		  </div>
+		  <div class="form-group">
+		    <label for="descriptionInput">Description</label>
+		    <input ng-model="expense.desc" type="text" class="form-control" id="descriptionInput" placeholder="Enter expense description">
+		  </div>
+		  <button ng-disabled="disableSave" type="submit" class="btn btn-default">Save</button>
+		  <br/>
+		  <br/>
+		  <span ng-if="result.display" class="label" ng-class="{'label-success': result.success, 'label-danger': !result.success}">Success</span>
+		  <span ng-if="result.display">{{result.message}}</span>
+		</form>
+	</div>
