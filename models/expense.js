@@ -1,6 +1,7 @@
 var Sequelize = require("sequelize");
+var credentials = require("../credentials");
 
-var sequelize = new Sequelize('expenses', 'expenses', 'expenses');
+var sequelize = new Sequelize(credentials.database, credentials.username, credentials.password);
 
 var Expense = sequelize.define('expense', {
 	price: Sequelize.DECIMAL(10,3),
