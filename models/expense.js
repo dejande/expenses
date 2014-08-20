@@ -1,20 +1,11 @@
-var Sequelize = require("sequelize");
-var credentials = require("../credentials");
 
-var sequelize = new Sequelize(credentials.database, credentials.username, credentials.password);
+module.exports = function(sequelize, DataTypes) {
 
-var Expense = sequelize.define('expense', {
-	price: Sequelize.DECIMAL(10,3),
-	name: Sequelize.STRING,
-	type: Sequelize.STRING,
-	datePaid: {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
-	description: Sequelize.TEXT
-});
-
-// Sync db
-// sequelize.drop();
-// sequelize.sync({force: true});
-
-module.exports = function() {
-	return Expense;
+	return sequelize.define('expense', {
+		price: DataTypes.DECIMAL(10,3),
+		name: DataTypes.STRING,
+		type: DataTypes.STRING,
+		datePaid: {type: DataTypes.DATE, defaultValue: DataTypes.NOW},
+		description: DataTypes.TEXT
+	});
 };

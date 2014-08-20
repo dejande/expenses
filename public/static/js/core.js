@@ -36,7 +36,7 @@ expensesApp.controller('mainCtrl', function($scope, $http, $routeParams){
 	};
 
 	$scope.save = function() {
-		$scope.expense.datePaid = $scope.expense.year + "-" + $scope.expense.month + "-" + $scope.expense.day + " 00:00:00";
+		$scope.expense.datePaid = $scope.expense.year + "-" + $scope.expense.month + "-" + $scope.expense.day + " 12:00:00";
 		$scope.disableSave = true;
 
 		$http.post('/api/expense', $scope.expense).success(function(data) {
