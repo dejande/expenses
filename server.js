@@ -38,7 +38,7 @@ router.get('/', function(req, res) {
 
 // Create expense
 router.route('/expense').post(function(req, res) {
-	var expense = Expense.create({
+	Expense.create({
 		price: req.body.price,
 		name: req.body.name,
 		type: req.body.type,
@@ -51,11 +51,12 @@ router.route('/expense').post(function(req, res) {
 	}).error(function(error) {
 		res.json({message: 'Expense not created: ' + error});
 	});
+});
 
 // Get all expenses
-}).get(function(req, res) {
+router.route('/expense/:view').get(function(req, res) {
 
-	Expense.findAll({order: 'datePaid'}).success(function(results) {
+	Expense.findAll({order: 'createdAt DESC', limit: req.params.view}).success(function(results) {
 		res.json(results);
 
 	}).error(function(error) {
