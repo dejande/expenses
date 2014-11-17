@@ -49,7 +49,7 @@ router.route('/expense').post(function(req, res) {
 		res.json({message: 'Expense created!'});
 
 	}).error(function(error) {
-		res.json({message: 'Expense not created: ' + error});
+		res.status(500).send('Internal server error');
 	});
 });
 
@@ -60,7 +60,29 @@ router.route('/expense/:view').get(function(req, res) {
 		res.json(results);
 
 	}).error(function(error) {
-		res.json({message: 'Could not fetch expenses!'});
+		res.status(500).send('Internal server error');
+	});
+});
+
+// Get all expenses by type
+router.route('/plot/type/:type').get(function(req, res) {
+
+	Expense.findAll({order: 'datePaid ASC', where: 'type = "' + req.params.type + '"'}).success(function(results) {
+		res.json(results);
+
+	}).error(function(error) {
+		res.status(500).send('Internal server error');
+	});
+});
+
+// Get all expenses by person
+router.route('/plot/person/:person').get(function(req, res) {
+
+	Expense.findAll({order: 'datePaid ASC', where: 'name = "' + req.params.person + '"'}).success(function(results) {
+		res.json(results);
+
+	}).error(function(error) {
+		res.status(500).send('Internal server error');
 	});
 });
 

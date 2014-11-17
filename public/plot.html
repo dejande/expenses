@@ -1,0 +1,8 @@
+
+<div class="container-fluid">
+	<div class="container">
+		<select class="form-control col-lg-3" ng-model="type" ng-options="type.name as type.value for type in types"></select>
+		<button ng-click="redraw()" class="btn btn-default">Prikaži</button>
+	</div>
+	<nvd3 options="options" data="data"></nvd3>
+</div>
