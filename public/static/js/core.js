@@ -19,6 +19,10 @@ expensesApp.config(['$routeProvider',
 			templateUrl: 'view.html',
 			controller: 'viewCtrl'
 		}).
+		when('/table', {
+			templateUrl: 'table.html',
+			controller: 'tableCtrl'
+		}).
 		when('/plot/:plot', {
 			templateUrl: 'plot.html',
 			controller: 'plotCtrl'
@@ -78,6 +82,21 @@ expensesApp.controller('viewCtrl', function($scope, $http, $routeParams, $timeou
 	};
 
 	$http.get('/api/expense/' + $routeParams.view).success(function(data) {
+		$scope.expenses = data;
+	});
+});
+
+/*
+ * Display tables with data
+ */
+expensesApp.controller('tableCtrl', function($scope, $http, $routeParams, $timeout){
+	$scope.expenses = [];
+	$scope.header = {
+		'name': 'Name',
+		'sumPrice': 'Paid'
+	};
+
+	$http.get('/api/table').success(function(data) {
 		$scope.expenses = data;
 	});
 });

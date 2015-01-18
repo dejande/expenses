@@ -64,6 +64,17 @@ router.route('/expense/:view').get(function(req, res) {
 	});
 });
 
+// Group data by name and sum prices
+router.route('/table').get(function(req, res) {
+
+	Expense.findAll({attributes: ['name', [sequelize.fn('sum', sequelize.col('price')), 'sumPrice']], group: 'name'}).success(function(results) {
+		res.json(results);
+
+	}).error(function(error) {
+		res.status(500).send('Internal server error');
+	});
+});
+
 // Get all expenses by type
 router.route('/plot/type/:type').get(function(req, res) {
 
