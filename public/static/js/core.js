@@ -90,19 +90,78 @@ expensesApp.controller('viewCtrl', function($scope, $http, $routeParams, $timeou
  * Display tables with data
  */
 expensesApp.controller('tableCtrl', function($scope, $http, $routeParams, $timeout){
+	// Per person
 	$scope.expenses = [];
 	$scope.header = {
 		'name': 'Name',
 		'sumPrice': 'Paid'
 	};
 
-	$http.get('/api/table').success(function(data) {
+	$http.get('/api/table/type/person').success(function(data) {
 		$scope.expenses = data;
+	});
+
+	// Per month
+	$scope.expensesMonth = [];
+	$scope.headerMonth = {
+		'month': 'Month',
+		'sumPrice': 'Paid'
+	};
+
+	$http.get('/api/table/type/month').success(function(data) {
+		$scope.expensesMonth = data;
+	});
+
+	// Per month per person
+	$scope.expensesMonthPerson = [];
+	$scope.headerMonthPerson = {
+		'month': 'Month',
+		'name': 'Name',
+		'sumPrice': 'Paid'
+	};
+
+	$http.get('/api/table/type/monthperson').success(function(data) {
+		$scope.expensesMonthPerson = data;
+	});
+
+	// Per type
+	$scope.expensesType = [];
+	$scope.headerType = {
+		'type': 'Type',
+		'sumPrice': 'Paid'
+	};
+
+	$http.get('/api/table/type/type').success(function(data) {
+		$scope.expensesType = data;
+	});
+
+	// Per type per person
+	$scope.expensesTypePerson = [];
+	$scope.headerTypePerson = {
+		'type': 'Type',
+		'name': 'Name',
+		'sumPrice': 'Paid'
+	};
+
+	$http.get('/api/table/type/typeperson').success(function(data) {
+		$scope.expensesTypePerson = data;
+	});
+
+	// Per type per month
+	$scope.expensesTypeMonth = [];
+	$scope.headerTypeMonth = {
+		'type': 'Type',
+		'month': 'Month',
+		'sumPrice': 'Paid'
+	};
+
+	$http.get('/api/table/type/typemonth').success(function(data) {
+		$scope.expensesTypeMonth = data;
 	});
 });
 
 expensesApp.controller('plotCtrl', function($scope, $http){
-	$scope.types = [{name: 'type', value: "Po tipu"}, {name: 'person', value: "Po osebi"}];
+	$scope.types = [{name: 'type', value: "Per type"}, {name: 'person', value: "Per person"}];
 	$scope.type = "type";
 	$scope.data = [];
 

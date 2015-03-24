@@ -11,7 +11,7 @@ var Sequelize	= require("sequelize");
 var credentials = require("./credentials");
 
 var sequelize = new Sequelize(credentials.database, credentials.username, credentials.password);
-var Expense = sequelize.import('./models/expense');
+var Expense = sequelize.import(__dirname + '/models/expense');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -65,14 +65,63 @@ router.route('/expense/:view').get(function(req, res) {
 });
 
 // Group data by name and sum prices
-router.route('/table').get(function(req, res) {
+router.route('/table/type/:type').get(function(req, res) {
 
-	Expense.findAll({attributes: ['name', [sequelize.fn('sum', sequelize.col('price')), 'sumPrice']], group: 'name'}).success(function(results) {
-		res.json(results);
+	if(req.params.type === "person") {
 
-	}).error(function(error) {
-		res.status(500).send('Internal server error');
-	});
+		Expense.findAll({attributes: ['name', [sequelize.fn('sum', sequelize.col('price')), 'sumPrice']], group: 'name'}).success(function(results) {
+			res.json(results);
+
+		}).error(function(error) {
+			res.status(500).send('Internal server error');
+		});
+
+	} else if (req.params.type === "month") {
+
+		Expense.findAll({attributes: ['name', [sequelize.fn('sum', sequelize.col('price')), 'sumPrice'], [sequelize.fn('YEAR', sequelize.col('datePaid')), 'year'], [sequelize.fn('MONTH', sequelize.col('datePaid')), 'month']], group: [{raw: 'CONCAT(YEAR(datePaid), MONTH(datePaid))'}]}).success(function(results) {
+			res.json(results);
+
+		}).error(function(error) {
+			res.status(500).send('Internal server error');
+		});
+
+	} else if (req.params.type === "monthperson") {
+
+		Expense.findAll({attributes: ['name', [sequelize.fn('sum', sequelize.col('price')), 'sumPrice'], [sequelize.fn('YEAR', sequelize.col('datePaid')), 'year'], [sequelize.fn('MONTH', sequelize.col('datePaid')), 'month']], group: [{raw: 'CONCAT(YEAR(datePaid), MONTH(datePaid))'}, 'name']}).success(function(results) {
+			res.json(results);
+
+		}).error(function(error) {
+			res.status(500).send('Internal server error');
+		});
+
+	} else if (req.params.type === "type") {
+
+		Expense.findAll({attributes: ['type', [sequelize.fn('sum', sequelize.col('price')), 'sumPrice']], group: 'type'}).success(function(results) {
+			res.json(results);
+
+		}).error(function(error) {
+			res.status(500).send('Internal server error');
+		});
+
+	} else if (req.params.type === "typeperson") {
+
+		Expense.findAll({attributes: ['type', 'name', [sequelize.fn('sum', sequelize.col('price')), 'sumPrice']], group: ['type', 'name']}).success(function(results) {
+			res.json(results);
+
+		}).error(function(error) {
+			res.status(500).send('Internal server error');
+		});
+
+	} else if (req.params.type === "typemonth") {
+
+		Expense.findAll({attributes: ['type', [sequelize.fn('sum', sequelize.col('price')), 'sumPrice'], [sequelize.fn('YEAR', sequelize.col('datePaid')), 'year'], [sequelize.fn('MONTH', sequelize.col('datePaid')), 'month']], group: [{raw: 'CONCAT(YEAR(datePaid), MONTH(datePaid))'}, 'type']}).success(function(results) {
+			res.json(results);
+
+		}).error(function(error) {
+			res.status(500).send('Internal server error');
+		});
+
+	}
 });
 
 // Get all expenses by type
